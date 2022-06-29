@@ -13,7 +13,7 @@ body{
 canvas{
     box-shadow: 10px 10px 10px blue;
     border-radius: 15px;
-    margin-top: 30px;
+    margin: 45px;
 }
 #input{
     width: 260px;
