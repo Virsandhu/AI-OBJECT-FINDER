@@ -26,6 +26,15 @@ function draw(){
             rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height)
             
         }
+        if(objects[i].label == object_name){
+            video_webcamLiveView.stop()
+            object_detector.detect(gotResults);
+            document.getElementById("object_found").innerHTML= object_name+" found";
+            var synth = window.speechSynthesis;
+              speak_data = objects[i].label;
+              var utterthis= new SpeechSynthesisUtterance(speak_data);
+              synth.speak(utterthis);
+        }
 
 }
 }
@@ -33,15 +42,7 @@ function start(){
     object_detector= ml5.objectDetector("cocossd", modelLoaded);
     document.getElementById("status").innerHTML= "Status : Detecting objects";
     object_name= document.getElementById("input").value;
-    if(objects[i].label == object_name){
-        video_webcamLiveView.stop()
-        object_detector.detect(gotResults);
-        document.getElementById("object_found").innerHTML= object_name+" found";
-        var synth = window.speechSynthesis;
-          speak_data = objects[i].label;
-          var utterthis= new SpeechSynthesisUtterance(speak_data);
-          synth.speak(utterthis);
-    }
+   
 }
 function modelLoaded(){
     status= true;
