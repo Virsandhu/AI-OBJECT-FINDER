@@ -4,37 +4,42 @@ function preload(){
  
 }
 function setup(){
-canvas = createCanvas(480,380);
-video= createCapture(480,380);
+canvas = createCanvas(380,380);
+video= createCapture(VIDEO);
+video.size(380,380)
 video.hide();
 canvas.center();
 }
 
 function draw(){
-    image(video,0,0,480,380);
+    image(video,0,0,380,380);
 
     if(status != ""){
         object_detector.detect(video,gotResults);
 
         for (i = 0; i< objects.length; i++) {
-            
+            document.getElementById("status").innerHTML= "Status: Objects detected";
             percent= floor(objects[i].confidence*100);
-            label=objects[i].label;
+           
             fill("blue");
             text(objects[i].label+ " "+percent+"%", objects[i].x+15,objects[i].y+15);
             noFill()
             rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height)
+
+            if(objects[i].label == object_name){
+                video.stop()
+                object_detector.detect(gotResults);
+                document.getElementById("object_found").innerHTML= object_name+" found";
+                var synth = window.speechSynthesis;
+                  speak_data = object_name+"found";
+                  var utterthis= new SpeechSynthesisUtterance(speak_data);
+                  synth.speak(utterthis);
+            }else{
+                document.getElementById("object_found").innerHTML= object_name+" not found";
+            }
             
         }
-        if(objects[i].label == object_name){
-            video_webcamLiveView.stop()
-            object_detector.detect(gotResults);
-            document.getElementById("object_found").innerHTML= object_name+" found";
-            var synth = window.speechSynthesis;
-              speak_data = objects[i].label;
-              var utterthis= new SpeechSynthesisUtterance(speak_data);
-              synth.speak(utterthis);
-        }
+        
 
 }
 }
